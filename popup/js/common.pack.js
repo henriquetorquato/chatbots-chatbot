@@ -71,23 +71,28 @@ var User = function () {
 
             if (this.basic == null) {
                 this.basic = this.getBasic();
+                this.passwd = null;
             }
-            this.passwd = null;
-            fetch("https://api.blip.ai/accounts/" + this.login + "/tokens", {
-                method: "POST",
-                headers: {
-                    Authorization: "Basic " + this.basic
-                }
-            }).then(function (r) {
-                return r.json();
-            }).then(function (result) {
-                if (result.message) callback(false);else {
-                    _this2.auth = new Token(result);
-                    callback(true);
-                }
-            }).catch(function (error) {
-                callback(false);
-            });
+
+            if (typeof this.auth.token == "undefined" || this.auth.expires < new Date()) {
+                fetch("https://api.blip.ai/accounts/" + this.login + "/tokens", {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Basic " + this.basic
+                    }
+                }).then(function (r) {
+                    return r.json();
+                }).then(function (result) {
+                    if (result.message) callback(false);else {
+                        _this2.auth = new Token(result);
+                        callback(true);
+                    }
+                }).catch(function (error) {
+                    callback(false);
+                });
+            } else {
+                callback(true);
+            }
         }
     }, {
         key: "getBots",

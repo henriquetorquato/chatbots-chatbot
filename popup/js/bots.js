@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function(){
     chrome.extension.sendRequest({method: 'get', key: 'user'}, function(user) {
         newUser = new User(user.login, "");
         newUser.basic = user.basic;
-        console.log(newUser);
         newUser.getBots(function(bots){
             bots.forEach((bot) => {
                 el = createBotElement(bot);
