@@ -1,0 +1,20 @@
+{
+	"name": "BLiP Chatbot's Chatbot",
+	"version": "0.0.1",
+	"manifest_version": 2,
+	"description": "BLiP Chat addition",
+	"browser_action": {
+		"default_title": "BLiP Chatbot's Chatbot",
+		"default_popup": "popup/index.html"
+	},
+	"permissions": [
+		"https://chat.blip.ai/*",
+		"tabs"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://chat.blip.ai/*"],
+            "js": ["popup/js/app.js"]
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/common.pack.js"></script>
+    <script src="js/login.js"></script>
+</head>
+<body>
+    <div>
+        <div class="input-field">
+            <label for="login">Login</label>
+            <input type="email" id="login" class="validate"/>
+        </div>
+        <div class="input-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="validate"/>
+        </div>
+        <div>
+            <p id="error-message" class="error-message" hidden>Invalid login or password.</p>
+        </div>
+        <button id="submit" class="login-button">BLiP Login</button>
+    </div>
+</body>
+</html>
