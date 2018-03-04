@@ -38,10 +38,16 @@ createBotElement = function createBotElement(bot){
 
 document.addEventListener("DOMContentLoaded", function(){
     nodes.load();
-    parent.user.getBots(function(bots){
-        bots.forEach((bot) => {
-            el = createBotElement(bot);
-            nodes.element.list.appendChild(el);
+
+    chrome.extension.sendRequest({method: 'get', key: 'user'}, function(user) {
+        newUser = new User(user.login, "");
+        newUser.basic = user.basic;
+        console.log(newUser);
+        newUser.getBots(function(bots){
+            bots.forEach((bot) => {
+                el = createBotElement(bot);
+                nodes.element.list.appendChild(el);
+            });
         });
     });
 });

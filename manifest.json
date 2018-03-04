@@ -10,11 +10,11 @@
 	"permissions": [
 		"https://chat.blip.ai/*",
 		"tabs"
-    ],
-    "content_scripts": [
-        {
-            "matches": ["https://chat.blip.ai/*"],
-            "js": ["popup/js/app.js"]
-        }
-    ]
+	],
+	"background": {
+		"scripts": [
+			"background.js"
+		],
+		"persistent": true
+	}
 }

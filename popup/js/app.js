@@ -16,7 +16,11 @@ var page = {
 
 document.addEventListener("DOMContentLoaded", function () {
     nodes.load();
-    if (user.basic === null) {
-        page.set(page.name.login);
-    }
+    chrome.extension.sendRequest({method: 'get', key: 'user'}, function(response) {
+        if(response == null){
+            page.set(page.name.login);
+        }else{
+            page.set(page.name.bots);
+        }
+    });
 });

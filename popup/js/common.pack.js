@@ -46,25 +46,6 @@ var Token = function Token(_ref) {
     this.expires = new Date(expires);
 };
 
-var Chatbot = function Chatbot(_ref2) {
-    var imageUri = _ref2.imageUri,
-        id = _ref2.id,
-        shortName = _ref2.shortName,
-        name = _ref2.name,
-        description = _ref2.description,
-        template = _ref2.template,
-        activatedServices = _ref2.activatedServices;
-
-    _classCallCheck(this, Chatbot);
-
-    this.id = id;
-    this.name = name;
-    this.imageUri = imageUri;
-    this.shortName = shortName;
-    this.description = description;
-    this.template = template;
-};
-
 var User = function () {
     function User() {
         var login = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
@@ -88,7 +69,9 @@ var User = function () {
         value: function checkBasic(callback) {
             var _this2 = this;
 
-            this.basic = this.getBasic();
+            if (this.basic == null) {
+                this.basic = this.getBasic();
+            }
             this.passwd = null;
             fetch("https://api.blip.ai/accounts/" + this.login + "/tokens", {
                 method: "POST",
@@ -109,16 +92,18 @@ var User = function () {
     }, {
         key: "getBots",
         value: function getBots(callback) {
-            if (this.auth.expires < new Date()) this.checkBasic(function () {});
+            var _this3 = this;
 
-            fetch("https://api.blip.ai/applications/mine", {
-                headers: {
-                    Authorization: "Token " + this.auth.token
-                }
-            }).then(function (r) {
-                return r.json();
-            }).then(function (data) {
-                callback(data);
+            this.checkBasic(function () {
+                fetch("https://api.blip.ai/applications/mine", {
+                    headers: {
+                        Authorization: "Token " + _this3.auth.token
+                    }
+                }).then(function (r) {
+                    return r.json();
+                }).then(function (bots) {
+                    callback(bots);
+                });
             });
         }
     }]);

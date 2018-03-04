@@ -34,7 +34,9 @@ class User {
     }
 
     checkBasic(callback){
-        this.basic = this.getBasic()
+        if(this.basic == null){
+            this.basic = this.getBasic()
+        }
         this.passwd = null
         fetch(`https://api.blip.ai/accounts/${this.login}/tokens`, {
             method: "POST",
@@ -59,20 +61,19 @@ class User {
     }
 
     getBots(callback){
-        if(this.auth.expires < new Date())
-            this.checkBasic(() => {});
-
-        fetch("https://api.blip.ai/applications/mine", {
-            headers: {
-                Authorization: `Token ${this.auth.token}`
-            }
-        })
-        .then((r) => {
-            return r.json()
-        })
-        .then((bots) => {
-            callback(bots)
-        })
+        this.checkBasic(() => {
+            fetch("https://api.blip.ai/applications/mine", {
+                headers: {
+                    Authorization: `Token ${this.auth.token}`
+                }
+            })
+            .then((r) => {
+                return r.json()
+            })
+            .then((bots) => {
+                callback(bots)
+            })
+        }); 
     }
 
 }

@@ -20,7 +20,7 @@ validateLogin = function validateLogin() {
                     nodes.element.password.value);
     user.checkBasic(function(auth){
         if(auth){
-            parent.user = user;
+            chrome.extension.sendRequest({method: 'set', key: 'user', value: user}, function(response) { });
             parent.page.set(parent.page.name.bots);
         }else{
             nodes.element.password.value = "";

@@ -40,3 +40,14 @@ iframe {
     height: 80px;
     border-radius: 50%;
 }
+
+.collapsible-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge {
+    font-size: 20px !important;
+}
