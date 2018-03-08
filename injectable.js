@@ -31,8 +31,22 @@ injectDependencies = function injectDependencies(target, callback) {
 };
 
 injectedWindowReady = function injectedWindowReady(){
-    messagesList = injectedWindow.jQuery(".blip-cards-items-list")[0];
-    messagesList.on("")
+    messagesList = injectedWindow.document.getElementsByClassName("blip-cards-items-list")[0];
+
+    mutationObserver = new MutationObserver(function(evts){
+        evts.forEach(function(evt){
+
+            if(evt.type == "childList" && evt.addedNodes.length > 0){
+                Array.from(evt.addedNodes).forEach(function(node){
+                    console.log(node.lastChild);
+                });
+            }
+
+        });
+    })
+    .observe(messagesList, {
+        childList: true
+    });
 };
 
 injectDependencies(document, function(){
@@ -51,6 +65,6 @@ injectDependencies(document, function(){
     });
 
     injectedWindow.addEventListener("DOMContentLoaded", function(){
-        injectedWindowReady();
+        // injectedWindowReady();
     });
 });
