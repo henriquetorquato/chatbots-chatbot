@@ -9,6 +9,7 @@
 	},
 	"permissions": [
 		"https://chat.blip.ai/*",
+		"activeTab",
 		"tabs"
 	],
 	"background": {

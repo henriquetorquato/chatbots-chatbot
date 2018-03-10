@@ -1,6 +1,9 @@
 var client = null;
 var injectedWindow = null;
 
+var textArea = null;
+var sendMessage = null;
+
 const urls = [
     "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js",
     "https://unpkg.com/blip-chat-widget@1.2.2/dist/blip-chat.js"
@@ -30,24 +33,46 @@ injectDependencies = function injectDependencies(target, callback) {
     loop();
 };
 
+messageReceived = function messageReceived(message) {
+    console.log("RECEIVED:", message);    
+    textArea.value = message;
+};
+
+messageSent = function messageSent(message) {
+    console.log("SENT:", message);
+};
+
 injectedWindowReady = function injectedWindowReady(){
-    messagesList = injectedWindow.document.getElementsByClassName("blip-cards-items-list")[0];
+    new MutationObserver(function(evts){
+        new MutationObserver(function(evts){
+            evts.forEach(function(evt){
+                if(evt.addedNodes.length > 0){
+                    Array.from(evt.addedNodes).forEach(function(node){
+                        if(node.className.indexOf("sent") > -1){
+                            el = node.querySelector("div[class='bubble right'] > div");
+                            messageSent(el.innerHTML);
+                        }else{
+                            el = node.querySelector("div[class='bubble left'] > div");
+                            if(el != null && el.className.indexOf("typing") == -1){
+                                messageReceived(el.innerHTML);
+                            }
+                        }
+                    });
+                }
 
-    mutationObserver = new MutationObserver(function(evts){
-        evts.forEach(function(evt){
-
-            if(evt.type == "childList" && evt.addedNodes.length > 0){
-                Array.from(evt.addedNodes).forEach(function(node){
-                    console.log(node.lastChild);
-                });
-            }
-
+            });
+        })
+        .observe(injectedWindow.document.getElementsByClassName("blip-cards-items-list")[0], {
+            childList: true
         });
     })
-    .observe(messagesList, {
+    .observe(injectedWindow.document.getElementById("thread"), {
         childList: true
     });
 };
+
+textArea = document.getElementById("msg-textarea");
+sendMessage = document.getElementById("blip-send-message");
 
 injectDependencies(document, function(){
     client = new BlipChat()
@@ -55,6 +80,8 @@ injectDependencies(document, function(){
     .withButton({"color":"#252525"});
 
     client.build();
+
+    document.getElementById("blip-chat-container").hidden = true
 
     injectedWindow = document.getElementById("blip-chat-iframe").contentWindow;
 
@@ -64,7 +91,7 @@ injectDependencies(document, function(){
         });
     });
 
-    injectedWindow.addEventListener("DOMContentLoaded", function(){
-        // injectedWindowReady();
+    injectedWindow.addEventListener("load", function(){
+        injectedWindowReady();
     });
 });
