@@ -1,97 +1,87 @@
-var client = null;
-var injectedWindow = null;
+inject = (appKey) => {
 
-var textArea = null;
-var sendMessage = null;
+    injected = {
+        client: null,
+        window: null
+    }
 
-const urls = [
-    "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js",
-    "https://unpkg.com/blip-chat-widget@1.2.2/dist/blip-chat.js"
-]
+    injectDependency = (callback) => {
+        el = document.createElement("script")
+        el.src = "https://unpkg.com/blip-chat-widget@1.2.2/dist/blip-chat.js"
+        el.addEventListener("load", () => { callback() })
+        document.head.appendChild(el)
+    }
 
-injectDependencies = function injectDependencies(target, callback) {
+    createClient = () => {
+        return new BlipChat()
+        .withAppKey(appKey)
+        .withButton({"color":"#252525"})
+    }
 
-    i = 0;
-    injectScript = function(src, callback) {
-        obj = target.createElement("script");
-        obj.src = src;
-        obj.addEventListener("load", function(){ callback(); });
-        target.head.appendChild(obj);
-    };    
+    sendToMaster = (message) => {
+        window.postMessage({
+            code: "SendMessage",
+            content: message
+        }, location.href)
+    }
 
-    loop = function(){
-        injectScript(urls[i], function(){
-            i += 1;
-            if(i < urls.length){
-                loop();
-            }else{
-                callback();
-            }
-        });
-    };
+    messageReceived = (message) => {
+        // Send received message to master chat
+        sendToMaster(message)
+    }
 
-    loop();
-};
+    messageListChanged = (evts) => {
+        evts.forEach((evt) => {
+            if(evt.addedNodes.length > 0) {
+                Array.from(evt.addedNodes).forEach((node) => {
 
-messageReceived = function messageReceived(message) {
-    console.log("RECEIVED:", message);    
-    window.postMessage({
-        code: "SendMessage",
-        content: message
-    }, location.href);
-};
-
-messageSent = function messageSent(message) {
-    console.log("SENT:", message);
-};
-
-injectedWindowReady = function injectedWindowReady(){
-    new MutationObserver(function(evts){
-        new MutationObserver(function(evts){
-            evts.forEach(function(evt){
-                if(evt.addedNodes.length > 0){
-                    Array.from(evt.addedNodes).forEach(function(node){
-                        if(node.className.indexOf("sent") > -1){
-                            el = node.querySelector("div[class='bubble right'] > div");
-                            messageSent(el.innerHTML);
-                        }else{
-                            el = node.querySelector("div[class='bubble left'] > div");
-                            if(el != null && el.className.indexOf("typing") == -1){
-                                messageReceived(el.innerHTML);
-                            }
+                    if(node.className.indexOf("sent") > -1) {
+                        // el = node.querySelector("div[class='bubble right'] > div")
+                        // messageSent(el.innerHTML)
+                    }else{
+                        el = node.querySelector("div[class='bubble left'] > div")
+                        if(el != null && el.className.indexOf("typing") < 0){
+                            messageReceived(el.innerHTML)
                         }
-                    });
-                }
+                    }
 
-            });
+                })
+            }
         })
-        .observe(injectedWindow.document.getElementsByClassName("blip-cards-items-list")[0], {
-            childList: true
-        });
-    })
-    .observe(injectedWindow.document.getElementById("thread"), {
-        childList: true
-    });
-};
+    }
 
-textArea = document.getElementById("msg-textarea");
-sendMessage = document.getElementById("blip-send-message");
+    load = () => {
+        injectDependency(() => {
 
-injectDependencies(document, function(){
-    client = new BlipChat()
-    .withAppKey('dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl')
-    .withButton({"color":"#252525"});
+            injected.client = createClient()
+            injected.client.build()
 
-    client.build();
+            injected.client.widget.blipChatContainer.hidden = true
 
-    document.getElementById("blip-chat-container").hidden = true
+            injected.window = injected.client.widget.blipChatContainer.querySelector("iframe").contentWindow
+            injected.window.onload = () => {
 
-    injectedWindow = document.getElementById("blip-chat-iframe").contentWindow;
+                injected.client.widget._openChat()
 
-    injectedWindow.addEventListener("load", function(){
-        injectDependencies(injectedWindow.document, function(){ 
-            client.widget._openChat();
-            injectedWindowReady();
-        });
-    });
-});
+                messageThread = injected.window.document.querySelector("div[id='thread']")
+                new MutationObserver(() => {
+                    new MutationObserver((evts) => messageListChanged(evts))
+                    .observe(messageThread.querySelector("div[class='blip-cards-items-list']"), {
+                        childList: true
+                    })
+                    injected.client.sendMessage("Começar")
+                })
+                .observe(messageThread, {
+                    childList: true
+                })
+
+            }
+
+        })
+    }
+
+    load()
+
+}
+
+inject("dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl")
