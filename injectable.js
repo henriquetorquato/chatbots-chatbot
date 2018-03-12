@@ -35,7 +35,10 @@ injectDependencies = function injectDependencies(target, callback) {
 
 messageReceived = function messageReceived(message) {
     console.log("RECEIVED:", message);    
-    textArea.value = message;
+    window.postMessage({
+        code: "SendMessage",
+        content: message
+    }, location.href);
 };
 
 messageSent = function messageSent(message) {
@@ -88,10 +91,7 @@ injectDependencies(document, function(){
     injectedWindow.addEventListener("load", function(){
         injectDependencies(injectedWindow.document, function(){ 
             client.widget._openChat();
+            injectedWindowReady();
         });
-    });
-
-    injectedWindow.addEventListener("load", function(){
-        injectedWindowReady();
     });
 });
