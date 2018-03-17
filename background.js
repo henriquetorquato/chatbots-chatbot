@@ -20,6 +20,10 @@ var generalStore = {
 
 };
 
+injectScript = function injectScript(fileName){
+    
+};
+
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
     if(!generalStore.storeExists(sender.id)){
@@ -34,6 +38,9 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
         case "set":
             generalStore.set(sender.id, request.key, request.value);
+            break;
+
+        case "inject":
             break;
 
     }
