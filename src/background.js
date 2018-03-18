@@ -29,7 +29,7 @@ getCurentTab = function getCurentTab(callback){
 injectScript = function injectScript(appKey){
     getCurentTab(function(tab){
         chrome.tabs.executeScript(tab.id, {
-            file: "payload/pack/loader.pack.js",
+            file: "payload/src/loader.js",
             allFrames: true
         });
 
