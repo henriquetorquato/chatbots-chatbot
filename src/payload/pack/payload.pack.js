@@ -104,5 +104,3 @@ inject = function inject(appKey) {
 
     load();
 };
-
-inject("dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl");
