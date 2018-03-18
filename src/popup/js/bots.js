@@ -2,11 +2,11 @@ var nodes = new Nodes({
     list: "bot-list"
 });
 
-createBotElement = function createBotElement(bot){
+callInjection = function callInjection(appKey){
+    chrome.extension.sendRequest({method: 'inject', key: ''}, function() {});
+};
 
-    if(bot.image == "undefined"){
-        bot.image = "";
-    }
+createBotElement = function createBotElement(bot){
 
     image = document.createElement("img");
     image.src = bot.imageUri;
@@ -16,12 +16,14 @@ createBotElement = function createBotElement(bot){
     displayName.innerHTML = bot.name;
     displayName.className = "badge";
 
-    description = document.createElement("p");
-    description.innerHTML = bot.description;
+    injectButton = document.createElement("button");
+    injectButton.className = "waves-effect waves-light btn";
+    injectButton.innerHTML = "Inject";
+    injectButton.onclick = function(){ callInjection(bot.id) };
 
     collapseBody = document.createElement("div");
     collapseBody.className = "collapsible-body";
-    collapseBody.appendChild(description);
+    collapseBody.appendChild(injectButton);
 
     collapseHeader = document.createElement("div");
     collapseHeader.className = "collapsible-header";

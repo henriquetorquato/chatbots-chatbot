@@ -8,6 +8,8 @@
 		"default_popup": "popup/index.html"
 	},
 	"permissions": [
+		"http://*/*",
+		"https://*/*",
 		"https://chat.blip.ai/*",
 		"activeTab",
 		"tabs"

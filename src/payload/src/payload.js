@@ -61,6 +61,9 @@ inject = (appKey) => {
             childList: true
         })
 
+        // Clears any chat history
+        window.localStorage.clear()
+
         injectDependency(() => {
 
             // Create and build a instance of BLiP Chat widget
@@ -98,5 +101,3 @@ inject = (appKey) => {
     load()
 
 }
-
-inject("dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl")

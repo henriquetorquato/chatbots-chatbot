@@ -20,8 +20,25 @@ var generalStore = {
 
 };
 
-injectScript = function injectScript(fileName){
-    
+getCurentTab = function getCurentTab(callback){
+    chrome.tabs.query({ active: true }, function(tabs){
+        callback(tabs[0]);
+    });
+};
+
+injectScript = function injectScript(appKey){
+    getCurentTab(function(tab){
+        chrome.tabs.executeScript(tab.id, {
+            file: "payload/pack/loader.pack.js",
+            allFrames: true
+        });
+
+        // appKey = "dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl";
+
+        // chrome.tabs.executeScript(tab.id, {
+        //     code: `inject("${appKey}")`
+        // });
+    });
 };
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
@@ -41,6 +58,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
             break;
 
         case "inject":
+            injectScript(request.key);
             break;
 
     }
