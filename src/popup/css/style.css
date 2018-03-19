@@ -1,53 +1,6 @@
 body {
-    padding: 25px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-}
-
-body div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-iframe {
     width: 500px;
-    height: 500px;
-}
-
-.login-button {
-    border: none;
-    height: 50px;
-    color: white;
-    font-size: 14px;
-    margin-top: 20px;
-    border-radius: 5px;
-    background-color: #2cc3d5;
-}
-
-.login-button:disabled {
-    background-color: lightgray;
-}
-
-.error-message {
-    color: red;
-    font-size: 15px;
-}
-
-.bot-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-}
-
-.collapsible-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.badge {
-    font-size: 20px !important;
+    padding: 10px;
 }

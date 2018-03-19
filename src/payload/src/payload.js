@@ -1,8 +1,18 @@
-inject = (appKey) => {
+inject = () => {
 
     injected = {
         client: null,
         window: null
+    }
+
+    getAppKey = () => {
+        thisElement = document.getElementById("payloadScript")
+        var [baseUrl, parameters] = thisElement.src.split("?")
+        appKey = parameters.replace("key=", "")
+        if(appKey.length == 60)
+            return appKey
+        else
+            return false
     }
 
     injectDependency = (callback) => {
@@ -13,7 +23,7 @@ inject = (appKey) => {
         document.head.appendChild(el)
     }
 
-    createClient = () => {
+    createClient = (appKey) => {
         // Returns a instance of BLiP Chat client
         return new BlipChat()
         .withAppKey(appKey)
@@ -66,8 +76,12 @@ inject = (appKey) => {
 
         injectDependency(() => {
 
+            appKey = getAppKey()
+            if(appKey)
+                throw new Error("AppKey could not be found!")
+
             // Create and build a instance of BLiP Chat widget
-            injected.client = createClient()
+            injected.client = createClient(appKey)
             injected.client.build()
 
             // Hides widget element

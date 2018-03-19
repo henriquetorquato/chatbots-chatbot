@@ -26,18 +26,19 @@ getCurentTab = function getCurentTab(callback){
     });
 };
 
-injectScript = function injectScript(appKey){
+getLoader = function getLoader(appkey){
+    return "script = document.createElement(\"script\");" +
+    "script.id = 'payloadScript';" +
+    "script.src = \"https://rawgit.com/henriquetorquato/chatbots-chatbot/master/src/payload/pack/payload.pack.js?key=" + appkey + "\";" +
+    "document.head.appendChild(script);";
+};
+
+injectScript = function injectScript(request){
     getCurentTab(function(tab){
         chrome.tabs.executeScript(tab.id, {
-            file: "payload/src/loader.js",
+            code: getLoader(request.key),
             allFrames: true
         });
-
-        // appKey = "dGVhZHNhc2Q6NzZiMTljNjMtMzVlMy00Nzc5LTg0NTctOTE1NDBmODM4ODhl";
-
-        // chrome.tabs.executeScript(tab.id, {
-        //     code: `inject("${appKey}")`
-        // });
     });
 };
 
@@ -58,7 +59,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
             break;
 
         case "inject":
-            injectScript(request.key);
+            injectScript(request);
             break;
 
     }
