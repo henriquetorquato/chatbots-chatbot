@@ -28,7 +28,6 @@ getCurentTab = function getCurentTab(callback){
 
 getLoader = function getLoader(appkey){
     return "script = document.createElement(\"script\");" +
-    "script.id = 'payloadScript';" +
     "script.src = \"https://rawgit.com/henriquetorquato/chatbots-chatbot/master/src/payload/pack/payload.pack.js?key=" + appkey + "\";" +
     "document.head.appendChild(script);";
 };
