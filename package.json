@@ -1,0 +1,12 @@
+{
+  "name": "chatbots-chatbot-popup",
+  "author": "Henrique Torquato",
+  "private": true,
+  "dependencies": {
+    "@types/chrome": "0.0.63",
+    "ts-loader": "^4.1.0",
+    "typescript": "^2.8.1",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13"
+  }
+}

@@ -1,0 +1,51 @@
+iframe {
+    width: 500px;
+    height: 280px;
+}
+
+body {
+    padding: 20px;
+}
+
+input:focus {
+    border-bottom-color: #10c4f6 !important;
+    box-shadow: 0 1px 0 0 #10c4f6 !important;
+    -webkit-box-shadow: 0 1px 0 0 #10c4f6 !important;
+}
+
+.login-button {
+    width: 100%;
+    height: 55px;
+    font-size: 15px;
+    border: none;
+    background-color: #10c4f6;
+    color: white;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.login-button:focus {
+    border: none;
+    background-color: #10c4f6;
+    color: white;
+}
+
+.login-button:disabled {
+    background-color: #bebebe;
+}
+
+.error {
+    font-size: 14px;
+    color: red;
+    display: none;
+}
+
+.hidden {
+    display: none;
+    transition: 0.3s;
+}
+
+.display {
+    display: block;
+    transition: 0.3s;
+}
