@@ -1,8 +1,4 @@
-export enum StoreMethod {
-    Inject = "inject",
-    Set = "set",
-    Get = "get"
-} 
+import { StoreMethod } from './enums'
 
 export class Store {
 

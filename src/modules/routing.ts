@@ -1,7 +1,4 @@
-export enum Pages {
-    Login = "login.html",
-    Bots = "bots.html"
-}
+import { Pages } from './enums'
 
 export class Routing {
 

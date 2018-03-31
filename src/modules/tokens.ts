@@ -1,6 +1,4 @@
-export enum Urls {
-    TokenRequest = "https://api.blip.ai/accounts/{login}/tokens"
-}
+import { Urls } from './enums'
 
 export class BearerToken {
 
