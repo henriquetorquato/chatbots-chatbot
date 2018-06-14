@@ -65,10 +65,11 @@ injectBot = function injectBot(identity) {
     
     parent.store.get("basic", function(basic){
 
-        let bots = new Library.Bots(basic)
-        bots.getAppKey(identity, function(appKey){
-            console.log(appKey)
-        })        
+        let bot = new Library.Bot(identity, basic)
+        
+        bot.getAuthorization(function(success){
+            if (success) bot.getAppKey(appKey => parent.store.inject(appKey, () => { }))
+        })
 
     })
 

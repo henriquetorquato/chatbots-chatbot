@@ -5,7 +5,7 @@
 	"description": "BLiP Chat addition",
 	"browser_action": {
 		"default_title": "Chatbot's Chatbot",
-		"default_popup": "old-popup/index.html"
+		"default_popup": "popup/index.html"
 	},
 	"permissions": [
 		"http://*/*",
