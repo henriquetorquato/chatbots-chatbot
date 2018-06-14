@@ -1,5 +1,7 @@
 export enum Urls {
-    TokenRequest = "https://api.blip.ai/accounts/{login}/tokens"
+    TokenRequest = "https://api.blip.ai/accounts/{login}/tokens",
+    BotsRequest = "https://api.blip.ai/applications/mine",
+    MsgingCommands = "https://msging.net/commands"
 }
 
 export enum StoreMethod {

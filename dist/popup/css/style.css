@@ -49,3 +49,7 @@ input:focus {
     display: block;
     transition: 0.3s;
 }
+
+.material-icons {
+    cursor: pointer;
+}

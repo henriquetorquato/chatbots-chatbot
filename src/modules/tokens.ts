@@ -19,7 +19,7 @@ export class BasicToken {
         this.login = login
     }
 
-    private getBasic = (): string => {
+    public getBasic = (): string => {
         return btoa(`${this.login.Login}:${this.login.Password}`)
     }
 

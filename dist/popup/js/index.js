@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
     routes = new Library.Routing(iframe)
     store = new Library.Store()
 
-    store.get('token', function(token){
+    store.get("auth", function(token){
 
         if(token == null){
             routes.set(Library.Pages.Login)

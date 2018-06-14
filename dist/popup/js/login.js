@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function(){
             if(response.message) {
                 displayError()
             }else{
-                parent.store.set("token", JSON.stringify(response))
+                parent.store.set("auth", JSON.stringify(response))
+                parent.store.set("basic", basic.getBasic())
                 parent.routes.set(Library.Pages.Bots)
             }
 
